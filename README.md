@@ -24,7 +24,11 @@ freshmail = FmRestApi(api_key, api_secret)
 2. Now You can connect with API by do_request method.
 
 - check Your connection with 'ping' action
-	
-	response = freshmail.do_request('ping')
+
+```python
+
+response = freshmail.do_request('ping')
+
+```
 
 For more information check official API documentation -[http://freshmail.pl/developer-api/autoryzacja/](http://freshmail.pl/developer-api/autoryzacja/)
