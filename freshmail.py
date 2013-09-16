@@ -1,7 +1,7 @@
-import hashlib
-import json
-import urllib
-import urllib2
+from hashlib import sha1
+from json import dumps, loads
+from urllib import urlencode
+from urllib2 import Request, urlopen
 
 
 class FmRestApi:
@@ -17,11 +17,11 @@ class FmRestApi:
         if params is None:
             post_data = ''
         elif self.content_type == 'application/json':
-            post_data = json.dumps(params)
+            post_data = dumps(params)
         else:
-            post_data = urllib.urlencode(params)
+            post_data = urlencode(params)
 
-        sign = hashlib.sha1(
+        api_sign = sha1(
             ''.join([
                 self.api_key,
                 '/',
@@ -36,21 +36,21 @@ class FmRestApi:
             self.host, self.prefix, url
         ])
 
-        req = urllib2.Request(address)
-        req.add_header('X-Rest-ApiKey', self.api_key)
-        req.add_header('X-Rest-ApiSign', sign)
-        req.add_header('Content-Type', self.content_type)
+        request = Request(address)
+        request.add_header('X-Rest-ApiKey', self.api_key)
+        request.add_header('X-Rest-ApiSign', api_sign)
+        request.add_header('Content-Type', self.content_type)
         if post_data != '':
-            req.add_data(post_data)
+            request.add_data(post_data)
 
-        response = urllib2.urlopen(req)
+        response = urlopen(request)
 
         self.raw_response = response.read()
         self.http_code = response.getcode()
 
-        if(raw_response):
+        if raw_response:
             return self.raw_response
-        self.response = json.loads(self.raw_response)
+        self.response = loads(self.raw_response)
 
         if self.http_code != 200:
             self.errors = self.response['errors']
