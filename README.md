@@ -17,9 +17,9 @@ api_secret = YOUR_API_SECRET
 freshmail = FmRestApi(api_key, api_secret)
 ```
 
-2. Now You can connect with API by do_request method.
+2. Now you can connect with API by do_request method.
 
-- check Your connection with 'ping' action
+- check your connection with 'ping' action
 
 ```python
 
